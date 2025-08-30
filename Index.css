@@ -1,0 +1,507 @@
+/* Dunkles Design im Stil von Spotify/Discord, Akzentfarbe Blau */
+:root{
+    --bg:#0b0f14;
+    --surface:#0f151a;
+    --muted:#bfc8d9;
+    --accent:#5865f2; /* Discord Blurple */
+    --accent-2:#4752c4;
+    --glass: rgba(255,255,255,0.03);
+    --shadow: 0 8px 24px rgba(0,0,0,0.6);
+    --radius:10px;
+}
+
+*{box-sizing:border-box}
+
+body {
+    margin: 0;
+    font-size: 16px; /* Basisgröße — anpassen wenn du größere/kleinere Basis willst */
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(180deg, var(--bg) 0%, #071019 100%);
+    color: var(--muted);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    min-height:100vh;
+}
+
+/* NAVBAR */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(90deg, rgba(88,101,242,0.09), transparent 60%);
+    backdrop-filter: blur(6px);
+    padding: 0 1.75rem;
+    height: 64px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.nav-logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+    display:flex;
+    align-items:center;
+    gap:0.6rem;
+}
+
+.nav-logo::before{
+    content: '';
+    width: 34px;
+    height: 34px;
+    border-radius:8px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    box-shadow: 0 6px 18px rgba(71,82,196,0.18), inset 0 -6px 12px rgba(0,0,0,0.25);
+}
+
+/* NAV LINKS */
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    align-items:center;
+}
+
+.nav-links li {
+    position: relative;
+    border-radius: 8px;
+    overflow: visible;
+}
+
+.nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    padding: 0 1rem;
+    line-height: 64px;
+    display: inline-block;
+    transition: background 180ms, color 180ms, transform 120ms;
+    border-radius:8px;
+}
+
+.nav-links a:hover {
+    background: linear-gradient(90deg, rgba(88,101,242,0.11), rgba(71,82,196,0.06));
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* DROPDOWN */
+.dropdown {
+    cursor: pointer;
+    position: relative;
+}
+
+.dropdown > a::after{
+    content: '▾';
+    margin-left: 8px;
+    font-size: 0.7rem;
+    opacity:0.9;
+}
+
+.dropdown-content {
+    display: block;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    opacity: 0;
+    transform: translateY(-6px);
+    pointer-events: none;
+    transition: opacity 180ms ease, transform 180ms ease;
+    width: 220px;
+    min-width: 180px;
+    background: linear-gradient(180deg, var(--surface), rgba(15,21,26,0.95));
+    box-shadow: 0 14px 40px rgba(2,6,23,0.7);
+    z-index: 60;
+    border-radius: 10px;
+    padding: 0.35rem;
+    border: 1px solid rgba(255,255,255,0.03);
+}
+
+.dropdown-content li{
+    list-style:none;
+    margin:0;
+}
+
+.dropdown-content li a {
+    padding: 10px 14px;
+    display: block;
+    color: var(--muted);
+    border-radius:8px;
+    transition: background 140ms, color 140ms;
+}
+
+.dropdown-content li a:hover{
+    background: linear-gradient(90deg, rgba(88,101,242,0.12), rgba(71,82,196,0.06));
+    color:#fff;
+}
+
+/* Hover öffnet Dropdown */
+.dropdown:hover > a { color: #fff; }
+.dropdown:hover .dropdown-content {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* MAIN */
+main{
+    padding: 3.25rem 1.75rem;
+    min-height: calc(100vh - 64px - 72px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--muted);
+}
+
+/* FOOTER */
+footer {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+    color: var(--muted);
+    text-align: center;
+    padding: 1rem 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    border-top: 1px solid rgba(255,255,255,0.02);
+}
+
+footer button {
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.25rem;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: transform 120ms, box-shadow 120ms, opacity 120ms;
+    box-shadow: 0 10px 30px rgba(71,82,196,0.14);
+    backdrop-filter: blur(4px);
+}
+
+footer button:active { transform: translateY(0); }
+footer button:focus { outline: 3px solid rgba(88,101,242,0.18); outline-offset: 3px; }
+
+/* MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background: rgba(2,6,23,0.6);
+    backdrop-filter: blur(4px);
+}
+
+.modal.open{
+    opacity:1;
+    pointer-events:auto;
+}
+
+/* Animierte Modal-Inhalte */
+.modal-content{
+    transform: translateY(8px) scale(.99);
+    opacity:0;
+    transition: transform 220ms cubic-bezier(.2,.9,.3,1), opacity 220ms ease;
+    width: min(520px, 92%);
+    max-width: 720px;
+}
+
+.modal.open .modal-content{
+    transform: translateY(0) scale(1);
+    opacity:1;
+}
+
+/* Close-Button optisch angepasst */
+.close{
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size:1.6rem;
+    line-height:1;
+    padding:.25rem .5rem;
+    cursor:pointer;
+    position:absolute;
+    top:10px;
+    right:12px;
+    border-radius:6px;
+    transition: background 120ms, color 120ms;
+}
+
+.close:hover{ background: rgba(255,255,255,0.02); color:#fff; }
+
+/* FORMS */
+label{font-size:0.9rem; color:var(--muted); display:block; margin-top:0.3rem}
+input, textarea {
+    width: 100%;
+    padding: 0.6rem;
+    margin: 0.4rem 0 1rem 0;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.03);
+    background: rgba(255,255,255,0.02);
+    color: var(--muted);
+    resize: vertical;
+    min-height:40px;
+}
+
+input:focus, textarea:focus{
+    outline: none;
+    box-shadow: 0 6px 22px rgba(88,101,242,0.09);
+    border-color: rgba(88,101,242,0.25);
+}
+
+button[type="submit"] {
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.25rem;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: transform 120ms;
+}
+
+button[type="submit"]:hover {
+    transform: translateY(-2px);
+}
+
+/* RESPONSIVE */
+@media (max-width:720px){
+    .nav-links{gap:0.25rem}
+    .nav-links a{padding:0 0.6rem; line-height:56px}
+    .nav-logo{font-size:1.1rem}
+    .modal-content{margin:14% auto}
+}
+
+/* Einfache Fokus-Umrandung für Tastaturnavigation */
+a:focus, button:focus, input:focus, textarea:focus{
+    outline: 3px solid rgba(88,101,242,0.12);
+    outline-offset: 2px;
+}
+
+/* Zusätzliche/angepasste Styles für das verbesserte Kontakt-Modal und Button */
+
+/* Footer-Knopf etwas prominenter und besser zugänglich */
+footer button {
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.25rem;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: transform 120ms, box-shadow 120ms, opacity 120ms;
+    box-shadow: 0 10px 30px rgba(71,82,196,0.14);
+    backdrop-filter: blur(4px);
+}
+
+footer button:active { transform: translateY(0); }
+footer button:focus { outline: 3px solid rgba(88,101,242,0.18); outline-offset: 3px; }
+
+/* Modal: zentriert, animiert, pointer-events gesteuert */
+.modal{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    pointer-events:none;
+    transition: opacity 180ms ease;
+    position:fixed;
+    inset:0;
+    background: rgba(2,6,23,0.45);
+    z-index:1000;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.modal.open{
+    opacity:1;
+    pointer-events:auto;
+}
+
+/* Animierte Modal-Inhalte */
+.modal-content{
+    transform: translateY(8px) scale(.99);
+    opacity:0;
+    transition: transform 220ms cubic-bezier(.2,.9,.3,1), opacity 220ms ease;
+    width: min(520px, 92%);
+    max-width: 720px;
+}
+
+.modal.open .modal-content{
+    transform: translateY(0) scale(1);
+    opacity:1;
+}
+
+/* Close-Button optisch angepasst */
+.close{
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size:1.6rem;
+    line-height:1;
+    padding:.25rem .5rem;
+    cursor:pointer;
+    position:absolute;
+    top:10px;
+    right:12px;
+    border-radius:6px;
+    transition: background 120ms, color 120ms;
+}
+
+.close:hover{ background: rgba(255,255,255,0.02); color:#fff; }
+
+/* Sekundärer Button Stil */
+button.secondary{
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.06);
+    color: var(--muted);
+    padding: 0.5rem .9rem;
+    border-radius: 999px;
+}
+
+button[type="submit"]{ min-width: 110px; }
+
+/* Status-Meldung im Modal */
+#kontaktStatus{
+    color: var(--muted);
+    font-size: .95rem;
+}
+
+/* Kleine Responsive-Anpassung für Modal */
+@media (max-width:480px){
+    .modal-content{ padding: 1rem; width: 94%; }
+    .close{ top:8px; right:8px; }
+}
+
+/* Links-Liste im Kontakt-Modal */
+.social-list {
+    list-style: none;
+    margin: 0.6rem 0;
+    padding: 0;
+    display: grid;
+    gap: 0.45rem;
+}
+
+.social-list li { margin: 0; }
+
+/* Reusable social button/link style */
+.social-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 0.9rem;
+    border-radius: 8px;
+    color: var(--muted);
+    text-decoration: none;
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    border: 1px solid rgba(255,255,255,0.02);
+    transition: background 140ms, color 140ms, transform 120ms;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
+
+.social-btn:hover {
+    background: linear-gradient(90deg, rgba(88,101,242,0.10), rgba(71,82,196,0.04));
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* Icon sizing and color */
+.icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 6px;
+    /* offizielles Discord-/GitHub-Icon-Background: Akzentfarbe */
+    background: linear-gradient(180deg, var(--accent), var(--accent-2));
+    color: #fff; /* SVGs verwenden fill="currentColor" */
+    flex: 0 0 34px;
+}
+
+.icon img,
+.icon-img {
+    width: 18px;
+    height: 18px;
+    display: block;
+    object-fit: contain;
+    border-radius: 2px;
+}
+
+/* falls das Bild einen transparenten/weißen Hintergrund hat und du die Blurple-Box weiter nutzen willst */
+.icon-discord {
+    background: linear-gradient(180deg, #5865f2, #4752c4);
+    color: #fff;
+    /* optional: slightly larger icon area for images */
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* small tweak: ensure dropdown doesn't overflow viewport on small screens */
+@media (max-width:480px) {
+    .dropdown-content { left: 8px; right: 8px; width: auto; }
+}
+
+/* Fix: Einheitliche Schrift & konsistente Größen für Buttons/Links */
+body {
+    font-size: 16px; /* Basisgröße — anpassen wenn du größere/kleinere Basis willst */
+    font-family: 'Segoe UI', Arial, sans-serif; /* stellt sicher, dass alle Elemente dieselbe Basis-Schrift verwenden */
+}
+
+/* Elemente erben die Body-Schrift und nutzen eine einheitliche Größe/Zeilenhöhe */
+button, .social-btn, .nav-links a, .nav-logo {
+    font-family: inherit;
+    font-size: 0.95rem;   /* einheitliche Lesbarkeit */
+    line-height: 1.35;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Logo größer/fett, bleibt sichtbar und konsistent */
+.nav-logo {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+/* Social-Text Feinanpassung */
+.social-text {
+    font-size: 0.95rem;
+    line-height: 1.2;
+    color: inherit;
+}
+.social-text strong {
+    font-weight: 700;
+}
+
+/* Copy-Feedback: standardmäßig verborgen (JS fügt .visible hinzu) */
+.copy-feedback {
+    margin-left: auto;
+    font-size: 0.85rem;
+    color: var(--accent);
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 160ms ease, transform 160ms ease;
+    pointer-events: none;
+    display: inline-block;
+}
+
+/* Sichtbar wenn JS die Klasse anhängt */
+.copy-feedback.visible {
+    opacity: 1;
+    transform: translateY(0);
+}

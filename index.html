@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Knuusper.de</title>
+    <link rel="stylesheet" href="Index.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="nav-logo">Knuusper.de</a>
+        <ul class="nav-links">
+            <li><a href="#">Home</a></li>
+            <li class="dropdown">
+                <a href="#" aria-haspopup="true" aria-expanded="false">Projekte</a>
+                <ul class="dropdown-content" role="menu" aria-label="Projekte">
+                    <li><a href="temp">Temp 1</a></li>
+                    <li><a href="temp">Temp 2</a></li>
+                    <li><a href="temp">Temp 3</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+
+    <main>
+        <!-- Hier kannst du später Inhalte ergänzen -->
+    </main>
+
+    <footer>
+        <button id="kontaktBtn" aria-controls="kontaktModal" aria-expanded="false">Kontakt</button>
+    </footer>
+
+    <div id="kontaktModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" tabindex="-1">
+        <div class="modal-content" role="document">
+            <button class="close" aria-label="Schließen">&times;</button>
+            <h2>Kontakt & Links</h2>
+
+            <ul class="social-list" aria-label="Kontakt-Links">
+                <li>
+                    <button id="discordCopyBtn" class="social-btn" aria-label="Discord-Tag kopieren" title="Discord kopieren">
+                        <span class="icon icon-discord" aria-hidden="true">
+                            <img src="assets/discordlogo.jpg" alt="Discord" class="icon-img">
+                        </span>
+                        <span class="social-text">Discord — <strong>knuusper</strong></span>
+                        <span class="copy-feedback" aria-hidden="true">Kopiert!</span>
+                    </button>
+                </li>
+                <li>
+                    <a href="https://github.com/Timo348" target="_blank" rel="noopener" class="social-btn">
+                        <span class="icon" aria-hidden="true">
+                            <svg viewBox="0 0 16 16" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38C13.71 14.53 16 11.54 16 8c0-4.42-3.58-8-8-8z"/>
+                            </svg>
+                        </span>
+                        <span class="social-text">GitHub — <strong>Timo348</strong></span>
+                    </a>
+                </li>
+            </ul>
+
+            <div style="text-align:right; margin-top:.75rem;">
+                <button type="button" id="closeLinks" class="secondary">Schließen</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    (function(){
+        const modal = document.getElementById('kontaktModal');
+        const btn = document.getElementById('kontaktBtn');
+        const closeIcon = modal.querySelector('.close');
+        const closeBtn = document.getElementById('closeLinks');
+        const discordBtn = document.getElementById('discordCopyBtn');
+        let lastFocused = null;
+
+        function focusableElements(container) {
+            return Array.from(container.querySelectorAll('a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'))
+                .filter(el => el.offsetWidth || el.offsetHeight || el === document.activeElement);
+        }
+
+        function openModal() {
+            lastFocused = document.activeElement;
+            modal.classList.add('open');
+            modal.setAttribute('aria-hidden', 'false');
+            btn.setAttribute('aria-expanded', 'true');
+            document.body.style.overflow = 'hidden';
+            const elems = focusableElements(modal);
+            if (elems.length) elems[0].focus();
+            document.addEventListener('keydown', handleKeyDown);
+        }
+
+        function closeModal() {
+            modal.classList.remove('open');
+            modal.setAttribute('aria-hidden', 'true');
+            btn.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+            if (lastFocused) lastFocused.focus();
+            document.removeEventListener('keydown', handleKeyDown);
+        }
+
+        function handleKeyDown(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+                return;
+            }
+            if (e.key === 'Tab') {
+                const elems = focusableElements(modal);
+                if (!elems.length) return;
+                const first = elems[0], last = elems[elems.length - 1];
+                if (e.shiftKey && document.activeElement === first) {
+                    e.preventDefault();
+                    last.focus();
+                } else if (!e.shiftKey && document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        }
+
+        btn.addEventListener('click', openModal);
+        closeIcon.addEventListener('click', closeModal);
+        if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        if (discordBtn) {
+            const feedback = discordBtn.querySelector('.copy-feedback');
+            discordBtn.addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText('knuusper');
+                    if (feedback) {
+                        feedback.classList.add('visible');
+                        setTimeout(() => feedback.classList.remove('visible'), 1400);
+                    }
+                } catch (err) {
+                    if (feedback) {
+                        feedback.textContent = 'Fehler';
+                        feedback.classList.add('visible');
+                        setTimeout(() => {
+                            feedback.classList.remove('visible');
+                            feedback.textContent = 'Kopiert!';
+                        }, 1400);
+                    }
+                }
+            });
+        }
+    })();
+    </script>
+</body>
+</html>
