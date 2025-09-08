@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Kontakt</title>
+    <link rel="stylesheet" href="Index.css">
+    <link rel="stylesheet" href="styles/style1.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <span class="blau">Knu</span>
+            <span class="lila">usper</span>
+        </div>
+        <ul>
+            <li><a class="blau" href="index.html">Home</a></li>
+            <li><a class="lila" href="Projekte.html">Projekte</a></li>
+            <li><a class="blau" href="kontakt.html">Kontakt</a></li>
+        </ul>
+    </nav>
+    <main>
+        <div class="box_groß1"> 
+            <h3>Kontakt</h3>
+            <ul>
+                <li><a href="https://github.com/timo348" target="_blank">Github</a></li>
+                <li>
+                    <p>Discord: </p>
+                     <a href="#" onclick="textKopieren(this); event.preventDefault();">
+                        Knuusper
+                    </a>
+                </li>
+                <li><p>Knuusper.Info@gmail.com</p></li>
+                <h4 style="margin-top: 100px; text-align: center; font-size: 50px; color: #2200ff;">:D</h4>
+            </ul>
+        </div>
+    </main>
+    <script>
+        function textKopieren(element) {
+            const text = element.innerText.trim();
+            navigator.clipboard.writeText(text)
+                .then(() => alert("Discord name wurde Kopiert"))
+                .catch(err => alert("Fehler beim Kopieren: " + err));
+        }
+    </script>
+</body>
+</html>
