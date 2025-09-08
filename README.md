@@ -1,1 +1,1 @@
-## The Server is hosted on https://www.Knuusper.de
+## The Server is hosted on Knuusper.de
